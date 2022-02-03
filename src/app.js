@@ -12,11 +12,11 @@ function formatDate(timestamp) {
   let day = days[date.getDay()];
   let hours = date.getHours();
   if (hours < 10) {
-    let hours = `0${hours}`;
+    hours = `0${hours}`;
   }
   let minutes = date.getMinutes();
   if (minutes < 10) {
-    let minutes = `0${minutes}`;
+    minutes = `0${minutes}`;
   }
   return `${day} ${hours}:${minutes}`;
 }
@@ -43,8 +43,17 @@ function displayTemperature(response) {
   weatherIcon.setAttribute("alt", response.data.weather[0].description);
 }
 
-let apiKey = "315a9bcbf521af440df195ee85aa6e09";
-let city = "London";
-let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+function search(city) {
+  let apiKey = "315a9bcbf521af440df195ee85aa6e09";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayTemperature);
+}
 
-axios.get(apiUrl).then(displayTemperature);
+function handleSubmit(event) {
+  event.preventDefault();
+  let cityInputElement = document.querySelector("#city-input");
+  search(cityInputElement.value);
+}
+
+let form = document.querySelector("#search-form");
+form.addEventListener("submit", handleSubmit);
